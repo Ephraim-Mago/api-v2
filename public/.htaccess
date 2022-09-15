@@ -1,0 +1,14 @@
+# Activer le module Rewrite
+RewriteEngine On
+
+# Handle Authorization Header
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+RewriteCond %{HTTP:X-Forwarded-Proto} =http [OR]
+RewriteCond %{HTTP:X-Forwarded-Proto} =""
+RewriteCond %{HTTPS} !=on
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301
+
+RewriteRule ^products/?$ public/products.php [NC,L]
+RewriteRule ^[^/]+/(.*)$ public/products.php?slug=$1 [L]
